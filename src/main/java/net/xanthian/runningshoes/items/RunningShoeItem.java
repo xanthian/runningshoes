@@ -39,7 +39,7 @@ public class RunningShoeItem extends ArmorItem implements IAnimatable {
     private static final UUID SPEED_MODIFIER = UUID.fromString("0c150d0f-337c-4da8-aada-ece6c8e9e9bd");
 
     public RunningShoeItem() {
-        super(ArmorMaterials.LEATHER, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT));
+        super(ArmorMaterials.LEATHER, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT).maxDamage(100));
     }
 
     @Override
