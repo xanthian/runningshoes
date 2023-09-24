@@ -4,42 +4,42 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.*;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import net.xanthian.runningshoes.client.RunningShoeRenderer;
 
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class RunningShoeItem extends ArmorItem implements IAnimatable {
+public class RunningShoeItem extends ArmorItem implements GeoItem {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     private static final UUID SPEED_MODIFIER = UUID.fromString("0c150d0f-337c-4da8-aada-ece6c8e9e9bd");
 
     public RunningShoeItem() {
-        super(ArmorMaterials.LEATHER, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT).maxDamage(100));
+        super(ArmorMaterials.LEATHER, Type.BOOTS, new Item.Settings().maxDamage(100));
     }
 
     @Override
@@ -56,40 +56,47 @@ public class RunningShoeItem extends ArmorItem implements IAnimatable {
         return builder.build();
     }
 
-    private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        LivingEntity livingEntity = event.getExtraDataOfType(LivingEntity.class).get(0);
+    @Override
+    public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private RunningShoeRenderer renderer;
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+            @Override
+            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack,
+                                                                        EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+                if (this.renderer == null)
+                    this.renderer = new RunningShoeRenderer();
 
-        if (livingEntity instanceof ArmorStandEntity) {
-            return PlayState.CONTINUE;
-        }
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 
-        List<Item> armorList = new ArrayList<>(4);
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                if (livingEntity.getEquippedStack(slot) != null) {
-                    armorList.add(livingEntity.getEquippedStack(slot).getItem());
-                }
+                return this.renderer;
             }
-        }
-
-        boolean isWearingAll = armorList.contains(ModItems.RUNNING_SHOES);
-        return isWearingAll ? PlayState.CONTINUE : PlayState.STOP;
+        });
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 20, this::predicate));
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+    }
+
+    private PlayState predicate(AnimationState animationState) {
+        animationState.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        Text.literal("Fleetness of Foot").formatted(Formatting.ITALIC, Formatting.YELLOW);
+        super.appendTooltip(stack, world, tooltip, context);
+        tooltip.add(Text.literal("Fleetness of Foot").formatted(Formatting.ITALIC, Formatting.GRAY));
     }
 }

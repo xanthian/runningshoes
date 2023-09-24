@@ -5,9 +5,9 @@ import net.minecraft.util.Identifier;
 import net.xanthian.Initialise;
 import net.xanthian.runningshoes.items.RunningShoeItem;
 
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class RunningShoeModel extends AnimatedGeoModel<RunningShoeItem> {
+public class RunningShoeModel extends GeoModel<RunningShoeItem> {
 
     @Override
     public Identifier getModelResource(RunningShoeItem object) {

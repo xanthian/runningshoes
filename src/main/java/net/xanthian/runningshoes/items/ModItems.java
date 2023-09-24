@@ -1,10 +1,11 @@
 package net.xanthian.runningshoes.items;
 
-import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.item.Item;
 
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+
 
 import net.xanthian.Initialise;
 
@@ -17,6 +18,6 @@ public class ModItems {
     }
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registry.ITEM, new Identifier(Initialise.MOD_ID, name), item);
+        return Registry.register(Registries.ITEM, new Identifier(Initialise.MOD_ID, name), item);
     }
 }
