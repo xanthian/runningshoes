@@ -90,6 +90,7 @@ public class RunningShoeItem extends ArmorItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        Text.literal("Fleetness of Foot").formatted(Formatting.ITALIC, Formatting.YELLOW);
+        super.appendTooltip(stack, world, tooltip, context);
+        tooltip.add(Text.literal("Fleetness of Foot").formatted(Formatting.ITALIC, Formatting.GRAY));
     }
 }
