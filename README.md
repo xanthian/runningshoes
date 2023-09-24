@@ -1,43 +1,24 @@
+![](https://i.imgur.com/fZTfQmg.png)
 
-Installation information
-=======
+These enchanted running shoes bestow upon their wearer the remarkable 'Fleetness of Foot,' a mystical power that allows them to move with a grace and swiftness unmatched.
+With each step, time seems to blur, and the world rushes by in a breathtaking blur of colors and sounds.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions at [github](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+The wearer becomes a living gust of wind, dancing effortlessly through forests, over mountains, and across plains.
 
-Once you have your clone, you can initialize your copy.
+It is said that those who possess the 'Fleetness of Foot' can traverse great distances in the blink of an eye, leaving all others in awe of their speed and agility.
 
-Setup Process:
---------
+Legends tell of heroes who, equipped with these shoes, have outrun storms, escaped perilous situations, and even raced against the very wind itself.
 
-Step 1: Open your command-line and browse to the folder where you extracted cloned your copy of this repository to.
+To wear these shoes is to embrace the essence of boundless motion and untamed swiftness.
 
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
 
-If you prefer to use IntelliJ:
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Run the following command: `gradlew genIntellijRuns` (`./gradlew genIntellijRuns` if you are on Mac/Linux)
-4. Refresh the Gradle Project in IDEA if required.
+![](https://i.imgur.com/6UHsUm3.png)
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can 
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+This mod adds a single pair of Boots 'Running Shoes'
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+Equipping these shoes grants the wearer 20% run speed bonus.
+
+However, the boots are made of thin leather and feathers so not very durable, wear them at your own risk!
+
+Trimmable (1.20>), the boots also serve a fashion purpose.
